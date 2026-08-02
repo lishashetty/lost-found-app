@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     stages {
+
         stage('Checkout Code') {
             steps {
                 checkout scm
@@ -23,7 +24,9 @@ pipeline {
 
         stage('Run Docker Container') {
             steps {
-                bat 'docker run -d -p 3000:3000 --name lost-found-container -p 3000:3000 lost-found-app'
+                bat 'docker stop lost-found-container || exit 0'
+                bat 'docker rm lost-found-container || exit 0'
+                bat 'docker run -d --name lost-found-container -p 3000:3000 lost-found-app'
             }
         }
     }
